@@ -1,0 +1,39 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+  color: #444;
+}
+
+#wrapper {
+  width: 80%;
+  margin: 20px auto;
+}
+
+p {
+  margin: 10px;
+}
+
+#status {
+}
+#count {
+  font-family: monospace;
+  font-size: 18px;
+  padding: 0 5px;
+  border-radius: 2px;
+  background: #eee;
+  color: #000;
+}
+
+#purchase {
+  width: 50%;
+}
+#purchase .item {
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+}
