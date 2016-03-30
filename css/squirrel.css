@@ -27,6 +27,8 @@ p {
   background: #eee;
   color: #000;
 }
+#message {
+}
 
 #purchase {
   width: 50%;
@@ -37,3 +39,20 @@ p {
   margin: 10px;
   padding: 10px;
 }
+
+#chute {
+  background: #eee;
+  width: 300px;
+  height: 400px;
+  overflow: hidden;
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+}
+.icon.acorn {
+  background-image: url('../i/Nut-50.png');
+  z-index: 100;
+}
+
