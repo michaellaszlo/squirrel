@@ -2,8 +2,6 @@
 
 ## You are a squirrel. Here are some acorns.
 
-![You are a squirrel. Here are some acorns](https://github.com/michaellaszlo/squirrel/blob/master/screenshot.png)
-
 I've been imagining an instructional game. It's inspired by Cookie
 Clicker, SpaceChem, and ChipWits. The idea, so far, is that you accumulate
 acorns in order to buy items that increase the rate at which you
@@ -47,3 +45,4 @@ IBOL, you make a program by connecting tiles that each perform a
 simple command. Such an interface would be especially well suited to
 touchscreens.
 
+![You are a squirrel. Here are some acorns.](https://github.com/michaellaszlo/squirrel/blob/master/screenshot.png)

@@ -4,7 +4,8 @@ var Squirrel = (function () {
       acorns,
       score;
 
-  function Icon(kind) {
+  function Icon(kind, owner) {
+    this.owner = owner;
     this.element = document.createElement('div');
     this.element.className = 'icon ' + kind;
     this.width = dimensions[kind].width;
@@ -29,24 +30,28 @@ var Squirrel = (function () {
       y0 = this.y;
     }
     function update() {
+      if (icon.destroyed) {
+        return;
+      }
       seconds = (Date.now() - startTime) / 1000;
+      if (seconds >= totalSeconds) {
+        icon.owner.destroy();
+      }
       icon.place(Math.min(x0 + (x1 - x0) * seconds / totalSeconds, x1),
                  Math.min(y0 + (y1 - y0) * seconds / totalSeconds, y1));
-      if (!icon.destroyed && seconds < totalSeconds) {
-        requestAnimationFrame(update);
-      }
+      requestAnimationFrame(update);
     }
     update();
   };
 
   function Acorn(kind) {
     this.kind = kind;
-    this.icon = new Icon(kind);
+    this.icon = new Icon(kind, this);
   }
   Acorn.prototype.drop = function () {
-    this.icon.place(dimensions.chute.width / 2, 0 - this.icon.height / 2);
-    this.icon.slide(dimensions.chute.width / 2,
-                    dimensions.chute.height / 2, 1);
+    this.icon.place(dimensions.chute.width/2, -this.icon.height/2);
+    this.icon.slide(dimensions.chute.width/2,
+                    dimensions.chute.height + this.icon.height/2, 3);
   };
 
   function processClick(event) {
@@ -58,12 +63,12 @@ var Squirrel = (function () {
     for (i = 0; i < acorns.length; ++i) {
       acorn = acorns[i];
       icon = acorn.icon;
-      left = icon.x - icon.width / 2;
-      right = icon.x + icon.width / 2;
-      top = icon.y - icon.height / 2;
-      bottom = icon.y + icon.height / 2;
+      left = icon.x - icon.width/2;
+      right = icon.x + icon.width/2;
+      top = icon.y - icon.height/2;
+      bottom = icon.y + icon.height/2;
       if (left <= x && x <= right && top <= y && y <= bottom) {
-        acorn.clickResponse();
+        acorn.handleClick();
       }
     }
   }
@@ -80,8 +85,12 @@ var Squirrel = (function () {
   }
 
   function dropOneAcorn() {
+    if (acorns.length >= 1) {
+      return;
+    }
     var acorn = new Acorn('acorn');
-    acorn.clickResponse = destroyAcorn.bind(acorn);
+    acorn.destroy = destroyAcorn.bind(acorn);
+    acorn.handleClick = acorn.destroy;
     acorn.index = acorns.length;
     acorns.push(acorn);
     acorn.drop();
