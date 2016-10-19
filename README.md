@@ -1,6 +1,8 @@
 # Squirrel
 
-## You are a squirrel. Here are some acorns. Build a machine to sort them.
+## You are a squirrel. Here are some acorns.
+
+![You are a squirrel. Here are some acorns](https://github.com/michaellaszlo/squirrel/blob/master/screenshot.png)
 
 I've been imagining an instructional game. It's inspired by Cookie
 Clicker, SpaceChem, and ChipWits. The idea, so far, is that you accumulate
