@@ -32,7 +32,7 @@ var Squirrel = (function () {
       seconds = (Date.now() - startTime) / 1000;
       icon.place(Math.min(x0 + (x1 - x0) * seconds / totalSeconds, x1),
                  Math.min(y0 + (y1 - y0) * seconds / totalSeconds, y1));
-      if (!this.destroyed && seconds < totalSeconds) {
+      if (!icon.destroyed && seconds < totalSeconds) {
         requestAnimationFrame(update);
       }
     }
@@ -71,6 +71,8 @@ var Squirrel = (function () {
   function destroyAcorn() {
     var acorn = this,
         icon = acorn.icon;
+    icon.destroyed = true;
+    icon.element.className += ' destroyed';
   }
 
   function dropOneAcorn() {
