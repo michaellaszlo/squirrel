@@ -1,6 +1,8 @@
 var Squirrel = (function () {
   var containers = {},
-      dimensions = {};
+      dimensions = {},
+      acorns,
+      score;
 
   function Icon(kind) {
     this.element = document.createElement('div');
@@ -30,7 +32,7 @@ var Squirrel = (function () {
       seconds = (Date.now() - startTime) / 1000;
       icon.place(Math.min(x0 + (x1 - x0) * seconds / totalSeconds, x1),
                  Math.min(y0 + (y1 - y0) * seconds / totalSeconds, y1));
-      if (seconds < totalSeconds) {
+      if (!this.destroyed && seconds < totalSeconds) {
         requestAnimationFrame(update);
       }
     }
@@ -51,21 +53,35 @@ var Squirrel = (function () {
     var pos = M.getMousePosition(event),
         offset = this.offset,
         x = pos.x - offset.left,
-        y = pos.y - offset.top;
-    console.log(x, y);
+        y = pos.y - offset.top,
+        i, acorn, icon, left, right, top, bottom;
+    for (i = 0; i < acorns.length; ++i) {
+      acorn = acorns[i];
+      icon = acorn.icon;
+      left = icon.x - icon.width / 2;
+      right = icon.x + icon.width / 2;
+      top = icon.y - icon.height / 2;
+      bottom = icon.y + icon.height / 2;
+      if (left <= x && x <= right && top <= y && y <= bottom) {
+        acorn.clickResponse();
+      }
+    }
   }
 
   function destroyAcorn() {
-    var acorn = this;
+    var acorn = this,
+        icon = acorn.icon;
   }
 
   function dropOneAcorn() {
     var acorn = new Acorn('acorn');
-    acorn.clickResponse = destroyAcorn;
+    acorn.clickResponse = destroyAcorn.bind(acorn);
+    acorns.push(acorn);
     acorn.drop();
   }
   
   function startGame() {
+    acorns = [];
     containers.chute.onclick = processClick;
     dropOneAcorn();
   }
@@ -73,7 +89,6 @@ var Squirrel = (function () {
   function load() {
     containers.chute = document.getElementById('chute');
     containers.chute.offset = M.getOffset(containers.chute, document.body);
-    console.log(containers.chute.offset);
     dimensions.chute = {
       width: containers.chute.offsetWidth,
       height: containers.chute.offsetHeight
@@ -81,7 +96,7 @@ var Squirrel = (function () {
     dimensions.acorn = {
       width: 50,
       height: 50
-    }
+    };
     startGame();
   }
 
