@@ -37,19 +37,34 @@ var Squirrel = (function () {
     update();
   };
 
-  function Nut(kind) {
+  function Acorn(kind) {
     this.kind = kind;
     this.icon = new Icon(kind);
   }
-  Nut.prototype.introduce = function () {
+  Acorn.prototype.drop = function () {
     this.icon.place(dimensions.chute.width / 2, 0 - this.icon.height / 2);
     this.icon.slide(dimensions.chute.width / 2,
                     dimensions.chute.height / 2, 1);
   };
 
+  function processClick(event) {
+    event = event || window.event;
+    console.log(event.clientX, event.clientY);
+  }
+
+  function destroyAcorn() {
+    var acorn = this;
+  }
+
+  function dropOneAcorn() {
+    var acorn = new Acorn('acorn');
+    acorn.clickResponse = destroyAcorn;
+    acorn.drop();
+  }
+  
   function startGame() {
-    var nut = new Nut('acorn');
-    nut.introduce();
+    containers.chute.onclick = processClick;
+    dropOneAcorn();
   }
 
   function load() {
