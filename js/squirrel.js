@@ -73,17 +73,29 @@ var Squirrel = (function () {
         icon = acorn.icon;
     icon.destroyed = true;
     icon.element.className += ' destroyed';
+    score += 1;
+    updateScoreDisplay();
+    acorns.splice(acorn.index, 1);
+    dropOneAcorn();
   }
 
   function dropOneAcorn() {
     var acorn = new Acorn('acorn');
     acorn.clickResponse = destroyAcorn.bind(acorn);
+    acorn.index = acorns.length;
     acorns.push(acorn);
     acorn.drop();
+  }
+
+  function updateScoreDisplay() {
+    document.getElementById('score').innerHTML = score;
+    document.getElementById('scoreNounSuffix').innerHTML =
+        (score == 1 ? '' : 's');
   }
   
   function startGame() {
     acorns = [];
+    score = 0;
     containers.chute.onclick = processClick;
     dropOneAcorn();
   }
