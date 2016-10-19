@@ -48,8 +48,11 @@ var Squirrel = (function () {
   };
 
   function processClick(event) {
-    event = event || window.event;
-    console.log(event.clientX, event.clientY);
+    var pos = M.getMousePosition(event),
+        offset = this.offset,
+        x = pos.x - offset.left,
+        y = pos.y - offset.top;
+    console.log(x, y);
   }
 
   function destroyAcorn() {
@@ -69,6 +72,8 @@ var Squirrel = (function () {
 
   function load() {
     containers.chute = document.getElementById('chute');
+    containers.chute.offset = M.getOffset(containers.chute, document.body);
+    console.log(containers.chute.offset);
     dimensions.chute = {
       width: containers.chute.offsetWidth,
       height: containers.chute.offsetHeight
