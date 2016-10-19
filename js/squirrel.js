@@ -53,8 +53,19 @@ var Squirrel = (function () {
     this.icon.slide(dimensions.chute.width/2,
                     dimensions.chute.height + this.icon.height/2, 3);
   };
+  Acorn.prototype.destroy = function () {
+    this.icon.destroyed = true;
+    this.icon.element.className += ' destroyed';
+    acorns.splice(this.index, 1);
+    dropOneAcorn();
+  };
+  Acorn.prototype.hit = function () {
+    score += 1;
+    updateScoreDisplay();
+    this.destroy();
+  }
 
-  function processClick(event) {
+  function chuteClick(event) {
     var pos = M.getMousePosition(event),
         offset = this.offset,
         x = pos.x - offset.left,
@@ -68,20 +79,9 @@ var Squirrel = (function () {
       top = icon.y - icon.height/2;
       bottom = icon.y + icon.height/2;
       if (left <= x && x <= right && top <= y && y <= bottom) {
-        acorn.handleClick();
+        acorn.hit();
       }
     }
-  }
-
-  function destroyAcorn() {
-    var acorn = this,
-        icon = acorn.icon;
-    icon.destroyed = true;
-    icon.element.className += ' destroyed';
-    score += 1;
-    updateScoreDisplay();
-    acorns.splice(acorn.index, 1);
-    dropOneAcorn();
   }
 
   function dropOneAcorn() {
@@ -89,8 +89,6 @@ var Squirrel = (function () {
       return;
     }
     var acorn = new Acorn('acorn');
-    acorn.destroy = destroyAcorn.bind(acorn);
-    acorn.handleClick = acorn.destroy;
     acorn.index = acorns.length;
     acorns.push(acorn);
     acorn.drop();
@@ -105,7 +103,7 @@ var Squirrel = (function () {
   function startGame() {
     acorns = [];
     score = 0;
-    containers.chute.onclick = processClick;
+    containers.chute.onclick = chuteClick;
     dropOneAcorn();
   }
 
