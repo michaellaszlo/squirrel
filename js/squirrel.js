@@ -49,9 +49,13 @@ var Squirrel = (function () {
     this.icon = new Icon(kind, this);
   }
   Acorn.prototype.drop = function () {
-    this.icon.place(dimensions.chute.width/2, -this.icon.height/2);
-    this.icon.slide(dimensions.chute.width/2,
-                    dimensions.chute.height + this.icon.height/2, 3);
+    var chuteWidth = dimensions.chute.width,
+        chuteHeight = dimensions.chute.height,
+        iconWidth = this.icon.width,
+        iconHeight = this.icon.height,
+        x = iconWidth/2 + Math.random()*(chuteWidth - iconWidth);
+    this.icon.place(x, -iconHeight/2);
+    this.icon.slide(x, chuteHeight + iconHeight/2, 3);
   };
   Acorn.prototype.destroy = function () {
     this.icon.destroyed = true;
